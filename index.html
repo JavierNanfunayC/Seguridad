@@ -4,13 +4,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cifrado de César</title>
+    <title>Cifrado César</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgba(250, 250, 100, 0.65);
+            font-family: Arial, sans-serif;
+            padding: 5%;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: red;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 80%;
+            margin: auto;
+            display: block;
+            border: solid 2px pink;
+        }
+
+        .form-group {
+            padding-top: 25px;
+            padding-bottom: 10px;
+            text-align: center;
+            color: blue;
+            font-size: 22px;
+            font-weight: bold;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .btn {
+            width: 40%;
+            background-color: yellow;
+            border: none;
+            margin: 10px auto;
+            display: block;
+            color: #333;
+	        font-weight:bold;
+            border: solid 2px green;
+        }
+
+        .btn:hover {
+	        color:white;
+	        font-weight:bold;
+            background-color: rgba(250,0,0, 0.75);
+        }
+
+        .alert {
+            margin: 0 auto;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            width: 80%;
+        }
+
+        .alert-success {
+            color: green;
+        }
+
+        .alert-danger {
+            color: red;
+        }
+
+        #mensajeError {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            color: red;
+        }
+
+        #resultado p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        #footer {
+            font-family: 'Geometr212 BkCn BT', sans-serif;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 60%;
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 4px 0;
+            border: solid 1px black;
+}
+
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="mt-5 mb-4">Cifrado de César</h1>
+        <h1>CIFRADO CESAR</h1>
         <form id="cifradoForm">
             <div class="form-group">
                 <label for="mensaje">Mensaje:</label>
@@ -20,10 +118,19 @@
                 <label for="clave">Clave:</label>
                 <input type="number" class="form-control" id="clave" required>
             </div>
-            <button type="button" class="btn btn-primary" onclick="encriptar()">Encriptar</button>
-            <button type="button" class="btn btn-primary" onclick="desencriptar()">Desencriptar</button>
+            <button type="button" class="btn" onclick="encriptar()">Encriptar</button>
+            <button type="button" class="btn" onclick="desencriptar()">Desencriptar</button>
         </form>
-        <div id="resultado" class="mt-4"></div>
+
+        <!-- Contenedor donde se mostrará el mensaje de error -->
+        <div id="mensajeError"></div>
+
+        <!-- Resultado del mensaje encriptado/desencriptado -->
+        <div id="resultado"></div>
+    </div>
+
+    <div id="footer">
+        <p>Elaborado por: COLLANTES | LOZANO | MONTALVAN | NANFUÑAY | NEYRA</p>
     </div>
 
     <script>
@@ -38,7 +145,7 @@
                 const posicion = alfabeto.indexOf(caracter);
 
                 if (posicion === -1) {
-                    resultado += caracter; // Caracter no en el alfabeto
+                    resultado += caracter;
                     continue;
                 }
 
@@ -57,14 +164,34 @@
             const mensaje = document.getElementById('mensaje').value;
             const clave = parseInt(document.getElementById('clave').value, 10);
 
+            // Limpiar cualquier mensaje de error anterior
+            document.getElementById('mensajeError').innerHTML = '';
+
+            // Validación para asegurarse que la clave no esté vacía
+            if (!mensaje || !clave) {
+                document.getElementById('mensajeError').innerHTML = "Por favor, ingrese tanto el mensaje como la clave.";
+                document.getElementById('resultado').innerHTML = ''; 
+                return;
+            }
+
             const resultado = cifrarCesar(mensaje, clave);
             document.getElementById('resultado').innerHTML =
-                `<p class='alert alert-success'>Mensaje encriptado: ${resultado}</p>`;
+                `<p class='alert alert-danger'>Mensaje encriptado: ${resultado}</p>`;
         }
 
         function desencriptar() {
             const mensaje = document.getElementById('mensaje').value;
             const clave = parseInt(document.getElementById('clave').value, 10);
+
+            // Limpiar cualquier mensaje de error anterior
+            document.getElementById('mensajeError').innerHTML = '';
+
+            // Validación para asegurarse que la clave no esté vacía
+            if (!mensaje || !clave) {
+                document.getElementById('mensajeError').innerHTML = "Por favor, ingrese tanto el mensaje como la clave.";
+                document.getElementById('resultado').innerHTML = '';
+                return;
+            }
 
             const resultado = cifrarCesar(mensaje, -clave);
             document.getElementById('resultado').innerHTML =
